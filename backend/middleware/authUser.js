@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { ErrorHandler } from "./error.js";
+import  ErrorHandler  from "./error.js";
 
 export const isAuthenticatedUser = (req, res, next) => {
   const token = req.cookies.token;
@@ -20,8 +20,23 @@ export const isAuthenticatedUser = (req, res, next) => {
       return next(ErrorHandler(401, "Invalid token data"));
     }
 
-    req.user = { id: decoded.userId, email: decoded.email }; 
+    req.user = { id: decoded.userId, email: decoded.email, role: decoded.role };
 
     next();
-  });
+  }); 
 };
+
+
+
+export const authorizeRole = (...roles) => {
+    return (req, res, next) => {
+        console.log(`User's Role: ${req.user.role}`);
+
+        if (!roles.includes(req.user.role)) {
+            return next(ErrorHandler(403, `Role: ${req.user.role} not allowed to access this resource.`));
+        }
+
+        next();
+    };
+};
+

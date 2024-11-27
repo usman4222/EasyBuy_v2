@@ -55,6 +55,14 @@ const ProductDetailsPage = () => {
     toast.success("Item Added to Cart");
   };
 
+  const discountedPrice = (price, discount) => {
+    if (discount) {
+      const discountAmount = (price * discount) / 100;
+      return (price - discountAmount).toFixed(2); // Return discounted price with two decimals
+    }
+    return price; // Return original price if no discount
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -102,9 +110,14 @@ const ProductDetailsPage = () => {
                             </span>
                         )} */}
             <div className="flex items-center gap-5">
-              <span className="text-primaryRed font-medium text-lg md:text-2xl">
-                ${product.price}
-              </span>
+              <div className="flex justify-center items-center mt-2 space-x-2">
+                <span className="text-gray-400 line-through text-sm">
+                  ${product.price}
+                </span>
+                <span className="text-primaryRed font-bold text-lg">
+                  ${discountedPrice(product.price, product.discount)}
+                </span>
+              </div>
 
               <div className="flex text-[#FAC451]">
                 {/* Full Stars */}
@@ -134,14 +147,11 @@ const ProductDetailsPage = () => {
               </button>
             </div>
             <button
-              disabled={product.stock < 1}
+              disabled={product.stock < 1 && "Out of Stock"}
               onClick={addToCartHandler}
               className="mt-3 md:mt-0 bg-primaryRed text-white py-2 px-6 hover:opacity-100 transition-opacity duration-300"
             >
-              Add to Cart
-            </button>
-            <button className="text-gray-500 hover:text-primaryRed transition-colors duration-200">
-              <AiOutlineHeart size={24} />
+              {product.stock < 1 ? "Out of Stock" : "Add to Cart"}
             </button>
           </div>
           {/* <div className="flex flex-col md:flex-row items-center gap-4 py-5">

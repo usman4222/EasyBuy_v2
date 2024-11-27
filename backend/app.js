@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import userRoutes from './routes/userRoute.js';
 import productRoutes from './routes/productRoute.js';
+import paymentRoutes from './routes/paymentRoute.js';
 import cookieParser from "cookie-parser";
 import errorMiddleware from "./middleware/error.js"; 
 import bodyParser from "body-parser";
@@ -35,6 +36,7 @@ app.use((req, res, next) => {
 app.use('/api/user', userRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/order', orderRoutes);
+app.use('/api/payment', paymentRoutes);
 
 app.get("/test-error", (req, res, next) => {
     next(new ErrorHandler("Test Error", 500)); 

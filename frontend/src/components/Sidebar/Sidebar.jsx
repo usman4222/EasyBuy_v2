@@ -4,10 +4,7 @@ import SidebarLinkGroup from "./SidebarLinkGroup";
 import Logo from "../../assets/images/logo.png";
 import { RxDashboard } from "react-icons/rx";
 import { FaRegUser } from "react-icons/fa";
-import { HiOutlineUsers } from "react-icons/hi";
-import { MdChecklist } from "react-icons/md";
 import { TbArticle } from "react-icons/tb";
-import { RiMoneyDollarCircleLine } from "react-icons/ri";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
@@ -17,9 +14,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const sidebar = useRef(null);
 
   const [adminOpen, setAdminOpen] = useState(false);
-  const [examOpen, setExamOpen] = useState(false);
-  const [academicsOpen, setAcademicsOpen] = useState(false);
-  const [accountsOfficeOpen, setAccountsOfficeOpen] = useState(false);
 
   useEffect(() => {
     const clickHandler = ({ target }) => {
@@ -47,92 +41,26 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const adminDropdown = [
     {
-      id: "classManagement",
-      label: "Class Management",
-      path: "/admin/class-management",
+      id: "addProduct",
+      label: "Add Product",
+      path: "/add-product",
     },
     {
-      id: "sectionManagement",
-      label: "Section Management",
-      path: "/admin/section-management",
-    },
-    {
-      id: "subjectManagement",
-      label: "Subject Management",
-      path: "/admin/subject-management",
-    },
-    {
-      id: "teacherManagement",
-      label: "Teacher Management",
-      path: "/admin/teacher-management",
-    },
-    {
-      id: "studentReport",
-      label: "Student Report",
-      path: "/admin/student-report",
+      id: "allProduct",
+      label: "All Product",
+      path: "/all-products",
     },
   ];
 
-  const academicsDropdown = [
-    { id: "students", label: "Students", path: "/academics/students" },
-    {
-      id: "pendingStudent",
-      label: "Pending Student",
-      path: "/academics/pending-students",
-    },
-  ];
 
-  const examDropdown = [
-    { id: "result", label: "Results", path: "/exam-department/result" },
-    {
-      id: "sittingArrangement",
-      label: "Sitting Arrangement",
-      path: "/exam-department/sitting-arrangement",
-    },
-    {
-      id: "examAttendanceSheet",
-      label: "Exam Attendance Sheet",
-      path: "/exam-department/exam-attendance-sheet",
-    },
-    {
-      id: "dateSheet",
-      label: "Date Sheet",
-      path: "/exam-department/date-sheet",
-    },
-  ];
 
-  const accountsOfficeDropdown = [
-    {
-      id: "feeStructure",
-      label: "Fee Structure",
-      path: "/accounts-office/fee-structure",
-    },
-    {
-      id: "feeCollection",
-      label: "Fee Collection",
-      path: "/accounts-office/fee-collection",
-    },
-    { id: "report", label: "Report", path: "/accounts-office/report" },
-  ];
 
-  const hostelDropdown = [
-    {
-      id: "pendingStudents",
-      label: "Pending Students",
-      path: "/hostel-management/pending-student",
-    },
-    {
-      id: "students",
-      label: "Students",
-      path: "/hostel-management/students",
-    },
-    { id: "rooms", label: "Romms", path: "/hostel-management/rooms" },
-  ];
+
 
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 border-r border-[#E2E8F0] z-40 flex h-screen w-[262px] flex-col overflow-y-hidden bg-[#fff] duration-300 ease-linear lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 border-r border-[#E2E8F0] z-10 flex h-screen w-[262px] flex-col overflow-y-hidden bg-[#fff] duration-300 ease-linear lg:static lg:translate-x-0 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
@@ -170,7 +98,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <ul className="mb-6 flex flex-col gap-1.5">
               <SidebarLinkGroup
                 activeCondition={
-                  pathname === "/" || pathname.includes("dashboard")
+                  pathname === "/dashboard" || pathname.includes("dashboard")
                 }
               >
                 {(handleClick, open) => {
@@ -178,11 +106,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <React.Fragment>
                       <NavLink
                         className={`group relative flex items-center gap-2.5 rounded-[9px] font-montserrat p-[14px] text-[14px] font-medium text-bodydark1 duration-300 ease-in-out   ${
-                          (pathname === "/" ||
+                          (pathname === "/dashboard" ||
                             pathname.includes("dashboard")) &&
                           "bg-[#F3F6FA] custom-gradient"
                         }`}
-                        to="/"
+                        to="/dashboard"
                       >
                         <RxDashboard />
                         Dashboard
@@ -204,7 +132,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         }`}
                       >
                         <FaRegUser />
-                        Admin
+                        Product
                       </button>
                       <ul
                         className={`ml-4 flex flex-col ${
@@ -231,163 +159,40 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
               <li>
                 <NavLink
-                  to="/enrollment"
+                  to="/orders"
                   className={`flex items-center gap-2.5 rounded-[9px] p-[14px] font-medium text-bodydark1 font-montserrat duration-300 ease-in-out hover:bg-[#F3F6FA] ${
-                    pathname === "/enrollment" && "bg-[#F3F6FA] custom-gradient"
+                    pathname === "/orders" && "bg-[#F3F6FA] custom-gradient"
                   }`}
                 >
                   <TbArticle />
-                  Enrolment Form
+                  Ordes
                 </NavLink>
               </li>
 
-              <SidebarLinkGroup activeCondition={academicsOpen}>
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <button
-                        onClick={handleClick}
-                        className={`group relative flex w-full items-center gap-2.5 rounded-[9px] p-[14px] font-montserrat font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#F3F6FA] ${
-                          pathname.includes("/academics") &&
-                          "bg-[#F3F6FA] custom-gradient"
-                        }`}
-                      >
-                        <HiOutlineUsers />
-                        Academics
-                      </button>
-                      <ul
-                        className={`ml-4 flex flex-col ${
-                          open ? "block" : "hidden"
-                        }`}
-                      >
-                        {academicsDropdown.map(({ id, label, path }) => (
-                          <li key={id}>
-                            <NavLink
-                              to={path}
-                              className={`block rounded-[9px] p-[10px] font-medium text-bodydark1 font-montserrat duration-300 ease-in-out hover:bg-[#F3F6FA] ${
-                                pathname.includes(path) && "bg-[#F3F6FA]"
-                              }`}
-                            >
-                              {label}
-                            </NavLink>
-                          </li>
-                        ))}
-                      </ul>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
+              <li>
+                <NavLink
+                  to="/product-reviews"
+                  className={`flex items-center gap-2.5 rounded-[9px] p-[14px] font-medium text-bodydark1 font-montserrat duration-300 ease-in-out hover:bg-[#F3F6FA] ${
+                    pathname === "/product-reviews" && "bg-[#F3F6FA] custom-gradient"
+                  }`}
+                >
+                  <TbArticle />
+                  Reviews
+                </NavLink>
+              </li>
 
-              <SidebarLinkGroup activeCondition={accountsOfficeOpen}>
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <button
-                        onClick={handleClick}
-                        className={`group relative flex w-full items-center gap-2.5 rounded-[9px] p-[14px] font-montserrat font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#F3F6FA] ${
-                          pathname.includes("/accounts-office") &&
-                          "bg-[#F3F6FA] custom-gradient"
-                        }`}
-                      >
-                        <RiMoneyDollarCircleLine />
-                        Accounts Office
-                      </button>
-                      <ul
-                        className={`ml-4 flex flex-col ${
-                          open ? "block" : "hidden"
-                        }`}
-                      >
-                        {accountsOfficeDropdown.map(({ id, label, path }) => (
-                          <li key={id}>
-                            <NavLink
-                              to={path}
-                              className={`block rounded-[9px] p-[10px] font-medium text-bodydark1 font-montserrat duration-300 ease-in-out hover:bg-[#F3F6FA] ${
-                                pathname.includes(path) && "bg-[#F3F6FA] "
-                              }`}
-                            >
-                              {label}
-                            </NavLink>
-                          </li>
-                        ))}
-                      </ul>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
+              <li>
+                <NavLink
+                  to="/all-user"
+                  className={`flex items-center gap-2.5 rounded-[9px] p-[14px] font-medium text-bodydark1 font-montserrat duration-300 ease-in-out hover:bg-[#F3F6FA] ${
+                    pathname === "/all-user" && "bg-[#F3F6FA] custom-gradient"
+                  }`}
+                >
+                  <TbArticle />
+                  Users
+                </NavLink>
+              </li>
 
-              <SidebarLinkGroup activeCondition={examOpen}>
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <button
-                        onClick={handleClick}
-                        className={`group relative flex w-full items-center gap-2.5 rounded-[9px] p-[14px] font-montserrat font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#F3F6FA] ${
-                          pathname.includes("/exam-department") &&
-                          "bg-[#F3F6FA] custom-gradient"
-                        }`}
-                      >
-                        <HiOutlineUsers />
-                        Exams Department
-                      </button>
-                      <ul
-                        className={`ml-4 flex flex-col ${
-                          open ? "block" : "hidden"
-                        }`}
-                      >
-                        {examDropdown.map(({ id, label, path }) => (
-                          <li key={id}>
-                            <NavLink
-                              to={path}
-                              className={`block rounded-[9px] p-[10px] font-medium text-bodydark1 font-montserrat duration-300 ease-in-out hover:bg-[#F3F6FA] ${
-                                pathname.includes(path) && "bg-[#F3F6FA]"
-                              }`}
-                            >
-                              {label}
-                            </NavLink>
-                          </li>
-                        ))}
-                      </ul>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-
-              <SidebarLinkGroup activeCondition={hostelDropdown}>
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <button
-                        onClick={handleClick}
-                        className={`group relative flex w-full items-center gap-2.5 rounded-[9px] p-[14px] font-montserrat font-medium text-bodydark1 duration-300 ease-in-out hover:bg-[#F3F6FA] ${
-                          pathname.includes("/hostel-management") &&
-                          "bg-[#F3F6FA] custom-gradient"
-                        }`}
-                      >
-                        <RiMoneyDollarCircleLine />
-                        Hostel Management
-                      </button>
-                      <ul
-                        className={`ml-4 flex flex-col ${
-                          open ? "block" : "hidden"
-                        }`}
-                      >
-                        {hostelDropdown.map(({ id, label, path }) => (
-                          <li key={id}>
-                            <NavLink
-                              to={path}
-                              className={`block rounded-[9px] p-[10px] font-medium text-bodydark1 font-montserrat duration-300 ease-in-out hover:bg-[#F3F6FA] ${
-                                pathname.includes(path) && "bg-[#F3F6FA] "
-                              }`}
-                            >
-                              {label}
-                            </NavLink>
-                          </li>
-                        ))}
-                      </ul>
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
             </ul>
           </div>
         </nav>

@@ -1,29 +1,19 @@
 import React, { useState } from "react";
-import Sidebar from "../../../Components/Sidebar/Sidebar";
-import Navbar from "../../../components/Header/Navbar";
-import DashBoardCard from "../../../Components/Cards/DashBoardCard";
-// import threeUser from "../../assets/svg/threeUser.svg";
-// import DashRightArrow from "../../assets/svg/DashRightArrow.svg";
-// import DashAccount from "../../assets/svg/DashAccount.svg";
-// import DashBlueArrow from "../../assets/svg/DashBlueArrow.svg";
-// import DashTeacher from "../../assets/svg/DashTeacher.svg";
-// import DashTeacherArrow from "../../assets/svg/DashTeacherArrow.svg";
-// import DashEventIcon from "../../assets/svg/DashEventIcon.svg";
-// import DashEventArrow from "../../assets/svg/DashEventArrow.svg";
-// import DashExamIcon from "../../assets/svg/DashExamIcon.svg";
-// import DashExamArrow from "../../assets/svg/DashExamArrow.svg";
-// import plusImage from "../../assets/svg/plus.svg";
-import AttendanceCard from "../../../components/Cards/AttendanceCard";
-import FinanceCard from "../../../Components/Cards/FinanceCard";
-import TodoList from "../../../components/TodoList";
+import { FaUsers } from "react-icons/fa";
 import Layout from "../../../Components/Layout";
+import { FaArrowRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AiFillProduct } from "react-icons/ai";
 
 export default function Dashboard() {
-  const [isOpen, setIsOpen] = useState(true);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  const { users } = useSelector((state) => state.allUsers);
+  const { products } = useSelector((state) => state.allAdminProducts);
+
+  const totalUsersCount = users ? users.length : 0; 
+  
+  
 
   return (
     <>
@@ -37,20 +27,23 @@ export default function Dashboard() {
                   <div className="flex px-[30px] pt-[30px] justify-between items-center">
                     <div className="flex gap-[20px] items-center">
                       <div className="flex p-[23.308px] justify-center items-center  rounded-[7.769px] bg-[rgba(247,184,75,0.1)]">
-                        <img src="" alt="users" />
+                        <FaUsers className="text-2xl text-[#4E5564]" />
                       </div>
+
                       <div>
                         <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          Total Students
+                          Total Users
                         </h6>
                         <h4 className="text-[#4E5564] font-montserrat text-[26px] md:text-[36px] font-semibold leading-[20px] mt-2">
-                          1,290
+                          {totalUsersCount}
                         </h4>
                       </div>
                     </div>
-                    <div className="hidden md:block">
-                      <img src="" alt="arrow" />
-                    </div>
+                    <Link to="/all-user">
+                      <div className="hidden md:block">
+                        <FaArrowRight className="text-2xl text-[#4E5564]" />
+                      </div>
+                    </Link>
                   </div>
                   <div className="px-[30px]">
                     <div className="bg-[#F4F4F4] px-[10px] ">
@@ -140,9 +133,11 @@ export default function Dashboard() {
                           </h4>
                         </div>
                       </div>
-                      <div className="hidden md:block">
-                        <img src="" alt="arrow" />
-                      </div>
+                      <Link to="/all-user">
+                        <div className="hidden md:block">
+                          <FaArrowRight className="text-2xl text-[#4E5564]" />
+                        </div>
+                      </Link>
                     </div>
                     <div className="px-[30px]">
                       <h4 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px] pb-[8px]">
@@ -181,20 +176,22 @@ export default function Dashboard() {
                       <div className="flex px-[30px]  py-[20px] justify-between rounded-[30px] items-center bg-[#fff] ">
                         <div className="flex gap-[20px] items-center">
                           <div className="flex p-[23.308px] justify-center items-center  rounded-[7.769px] rounded-[var(--Border-Radius-4-px, 4px)] bg-[rgba(16,185,129,0.1)]">
-                            <img src="" alt="users" />
+                            <AiFillProduct className="text-xl text-[#4E5564]" />
                           </div>
                           <div>
                             <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                              Total Teachers
+                              Total Products
                             </h6>
                             <h4 className="text-[#4E5564] font-montserrat text-[26px] md:text-[36px] font-semibold leading-[20px] mt-2">
-                              90
+                              {products.length || 0}
                             </h4>
                           </div>
                         </div>
-                        <div>
-                          <img src="" alt="arrow" />
-                        </div>
+                        <Link to="/all-products">
+                          <div className="hidden md:block">
+                            <FaArrowRight className="text-2xl text-[#4E5564]" />
+                          </div>
+                        </Link>
                       </div>
                     </div>
 
@@ -213,167 +210,11 @@ export default function Dashboard() {
                             </h4>
                           </div>
                         </div>
-                        <div>
-                          <img ssrc="" alt="arrow" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:w-[45%] mt-[20px] lg:mt-0" >
-                <div className="py-[30px] flex flex-col bg-[#fff] rounded-[30px] gap-[26px] ">
-                  <div className="flex lg:flex-col xl:flex xl:flex-row px-[30px]  justify-between  items-center ">
-                    <div className="flex lg:flex-col xl:flex  xl:flex-row gap-[20px] items-center">
-                      <div className="flex p-[23.308px] justify-center items-center   rounded-[7.769px] bg-[rgba(75,247,129,0.1)]">
-                        <img src="" alt="users" />
-                      </div>
-                      <div>
-                        <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          Exams Total Percentage
-                        </h6>
-                        <h4 className="text-[#4E5564] font-montserrat text-[36px] font-semibold leading-[20px] mt-2">
-                          80%
-                        </h4>
-                      </div>
-                    </div>
-                    <div className="lg:hidden xl:block">
-                      <img src="" alt="arrow" />
-                    </div>
-                  </div>
-                  <div className="px-[30px]">
-                    <h4 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px] pb-[8px]">
-                      10th
-                    </h4>
-                    <div className="flex items-center gap-[8px]  ">
-                      <div class="flex h-[10px] pr-[12px] justify-start items-center gap-[12px] flex-[1_0_0] rounded-[4px] bg-[#F8F8F8]">
-                        <div class="w-[20%] bg-[#10B981] rounded-[4px] h-full"></div>
-                      </div>
-                      <div>
-                        <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          80%
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-[30px]">
-                    <h4 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px] pb-[8px]">
-                      9th
-                    </h4>
-                    <div className="flex items-center gap-[8px]  ">
-                      <div class="flex h-[10px] pr-[12px] justify-start items-center gap-[12px] flex-[1_0_0] rounded-[4px] bg-[#F8F8F8]">
-                        <div class="w-[20%] bg-[#10B981] rounded-[4px] h-full"></div>
-                      </div>
-                      <div>
-                        <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          80%
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-[30px]">
-                    <h4 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px] pb-[8px]">
-                      8th
-                    </h4>
-                    <div className="flex items-center gap-[8px]  ">
-                      <div class="flex h-[10px] pr-[12px] justify-start items-center gap-[12px] flex-[1_0_0] rounded-[4px] bg-[#F8F8F8]">
-                        <div class="w-[20%] bg-[#10B981] rounded-[4px] h-full"></div>
-                      </div>
-                      <div>
-                        <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          80%
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-[30px]">
-                    <h4 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px] pb-[8px]">
-                      6th
-                    </h4>
-                    <div className="flex items-center gap-[8px]  ">
-                      <div class="flex h-[10px] pr-[12px] justify-start items-center gap-[12px] flex-[1_0_0] rounded-[4px] bg-[#F8F8F8]">
-                        <div class="w-[50%] bg-[#F7B84B] rounded-[4px] h-full"></div>
-                      </div>
-                      <div>
-                        <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          40%
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-[30px]">
-                    <h4 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px] pb-[8px]">
-                      5th
-                    </h4>
-                    <div className="flex items-center gap-[8px]  ">
-                      <div class="flex h-[10px] pr-[12px] justify-start items-center gap-[12px] flex-[1_0_0] rounded-[4px] bg-[#F8F8F8]">
-                        <div class="w-[50%] bg-[#F7B84B] rounded-[4px] h-full"></div>
-                      </div>
-                      <div>
-                        <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          40%
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-[30px]">
-                    <h4 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px] pb-[8px]">
-                      4th
-                    </h4>
-                    <div className="flex items-center gap-[8px]  ">
-                      <div class="flex h-[10px] pr-[12px] justify-start items-center gap-[12px] flex-[1_0_0] rounded-[4px] bg-[#F8F8F8]">
-                        <div class="w-[50%] bg-[#F7B84B] rounded-[4px] h-full"></div>
-                      </div>
-                      <div>
-                        <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          40%
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-[30px]">
-                    <h4 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px] pb-[8px]">
-                      3rd
-                    </h4>
-                    <div className="flex items-center gap-[8px]  ">
-                      <div class="flex h-[10px] pr-[12px] justify-start items-center gap-[12px] flex-[1_0_0] rounded-[4px] bg-[#F8F8F8]">
-                        <div class="w-[50%] bg-[#F7B84B] rounded-[4px] h-full"></div>
-                      </div>
-                      <div>
-                        <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          40%
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-[30px]">
-                    <h4 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px] pb-[8px]">
-                      2nd
-                    </h4>
-                    <div className="flex items-center gap-[8px]  ">
-                      <div class="flex h-[10px] pr-[12px] justify-start items-center gap-[12px] flex-[1_0_0] rounded-[4px] bg-[#F8F8F8]">
-                        <div class="w-[50%] bg-[#F74B4B] rounded-[4px] h-full"></div>
-                      </div>
-                      <div>
-                        <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          40%
-                        </h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-[30px] pb-[30px]">
-                    <h4 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px] pb-[8px]">
-                      1st
-                    </h4>
-                    <div className="flex items-center gap-[8px]  ">
-                      <div class="flex h-[10px] pr-[12px] justify-start items-center gap-[12px] flex-[1_0_0] rounded-[4px] bg-[#F8F8F8]">
-                        <div class="w-[50%] bg-[#F74B4B] rounded-[4px] h-full"></div>
-                      </div>
-                      <div>
-                        <h6 className="text-[#4E5564] font-montserrat text-[16px] font-semibold leading-[20px]">
-                          40%
-                        </h6>
+                        <Link to="/all-user">
+                          <div className="hidden md:block">
+                            <FaArrowRight className="text-2xl text-[#4E5564]" />
+                          </div>
+                        </Link>
                       </div>
                     </div>
                   </div>

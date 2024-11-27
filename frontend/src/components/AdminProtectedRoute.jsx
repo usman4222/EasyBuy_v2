@@ -6,7 +6,7 @@ const AdminProtectedRoute = () => {
 
     const { currentUser } = useSelector((state => state.user))
 
-    return currentUser.user.isAdmin ? <Outlet/> : <Navigate to='/login'/>
+    return currentUser?.role === "admin" ? <Outlet/> : <Navigate to='/login'/>
 }
 
 export default AdminProtectedRoute

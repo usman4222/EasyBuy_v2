@@ -1,7 +1,8 @@
+import mongoose from "mongoose";
 import catchAsyncError from "../middleware/catchAsyncError.js";
-import ErrorHandler from "../middleware/error.js";
 import Product from "../models/productModel.js";
 import ApiFeatures from "../utils/apiFeatures.js";
+import ErrorHandler from "../utils/errorHandler.js";
 
 
 export const createProduct = catchAsyncError(async (req, res, next) => {
@@ -21,11 +22,11 @@ export const createProduct = catchAsyncError(async (req, res, next) => {
         ratings: ratings || 0,
         slug,
         image: image || "product-img",
-        category,
+        category: category.toLowerCase(),
         stock,
         numOfReviews: numOfReviews || 0,
         reviews: reviews || [],
-        user: req.user.id,
+        user: req.user._id,
     });
 
     try {
@@ -79,14 +80,10 @@ export const getProducts = async (req, res, next) => {
 export const getAdminProducts = async (req, res, next) => {
     try {
 
-        const products = await Product.find({ user: req.user.id });
+        const products = await Product.find({ user: req.user._id });
 
         if (!products || products.length === 0) {
-            // return res.status(404).json({
-            //     success: false,
-            //     message: "No products found for this admin."
-            // });
-            return next(new ErrorHandler("No products found for this admin.", 40));
+            return next(new ErrorHandler("No products found for this admin.", 400));
         }
 
         res.status(200).json({
@@ -101,35 +98,24 @@ export const getAdminProducts = async (req, res, next) => {
 
 
 export const updateProduct = catchAsyncError(async (req, res, next) => {
-    const { id } = req.params;
-    const { name, description, price, category, stock, image } = req.body;
 
-    const product = await Product.findById(id);
+    let product = Product.findById(req.params.id)
 
     if (!product) {
-        return next(new ErrorHandler("Product not found", 404));
+        return next(new ErrorHandler("Product Not found", 404));
     }
 
-    if (name) product.name = name;
-    if (description) product.description = description;
-    if (price) product.price = price;
-    if (category) product.category = category;
-    if (stock !== undefined) product.stock = stock;
-    if (image) product.image = image;
 
-
-    if (name || category) {
-        const slugBase = `${name || product.name}-${category || product.category}`.toLowerCase().replace(/[^a-zA-Z0-9-]/g, '');
-        product.slug = `${slugBase}-${Math.random().toString(36).substr(2, 6)}`;
-    }
-
-    const updatedProduct = await product.save();
+    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    })
 
     res.status(200).json({
         success: true,
-        message: "Product updated successfully",
-        product: updatedProduct,
-    });
+        product
+    })
 });
 
 
@@ -154,6 +140,10 @@ export const deleteProduct = catchAsyncError(async (req, res, next) => {
 export const getProductDetails = catchAsyncError(async (req, res, next) => {
     const { id } = req.params;
 
+    // if (!mongoose.Types.ObjectId.isValid(id)) {
+    //     return next(new ErrorHandler("Invalid ID format", 400));
+    // }
+
     const product = await Product.findById(id);
 
     if (!product) {
@@ -162,7 +152,7 @@ export const getProductDetails = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        product
+        product,
     });
 });
 
@@ -170,12 +160,33 @@ export const getProductDetails = catchAsyncError(async (req, res, next) => {
 export const createProductReview = catchAsyncError(async (req, res, next) => {
     const { rating, comment, productId } = req.body;
 
+    // Check if required fields are provided
+    if (!rating || !comment || !productId) {
+        return res.status(400).json({
+            success: false,
+            message: "Rating, comment, and product ID are required",
+        });
+    }
+
+    // Ensure user information is available
+    if (!req.user) {
+        return next(new Error("User not logged in."));
+    }
+
     const review = {
+        user: req.user._id,
         rating: Number(rating),
-        comment
+        comment,
     };
 
     const product = await Product.findById(productId);
+
+    if (!product) {
+        return res.status(404).json({
+            success: false,
+            message: "Product not found",
+        });
+    }
 
     const isReviewed = product.reviews.find(
         (rev) => rev.user && rev.user.toString() === req.user._id.toString()
@@ -204,26 +215,39 @@ export const createProductReview = catchAsyncError(async (req, res, next) => {
 
     res.status(200).json({
         success: true,
-        message: "Review added successfully"
+        reviews: product.reviews, 
+        message: "Review added successfully",
     });
 });
 
 
 
 
-export const getAllReviews = catchAsyncError(async (req, res, next) => {
 
-    const product = await Product.findById(req.query.id)
+export const getAllReviewsOfProduct = catchAsyncError(async (req, res, next) => {
+    const productId = req.params.id;
+
+
+    const product = await Product.findById(productId).populate({
+        path: 'reviews.user', 
+        select: 'username email profileImage' 
+    });
 
     if (!product) {
-        return next(new ErrorHandler("Product Not found", 404))
+        console.log("Product not found.");
+        return next(new ErrorHandler("Product Not found", 404));
     }
+
+    console.log("Found Product:", product);
 
     res.status(200).json({
         success: true,
-        reviews: product.reviews
-    })
-})
+        reviews: product.reviews, 
+    });
+});
+
+
+
 
 
 

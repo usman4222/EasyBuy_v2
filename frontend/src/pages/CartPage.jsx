@@ -33,7 +33,7 @@ const CartPage = () => {
             <div className="flex justify-center py-10">
               <img src={animation} alt="" />
             </div>
-            <Link to="/" className="text-lg text-blue-500 hover:underline">
+            <Link to="/product-category" className="text-lg text-blue-500 hover:underline">
               Fill your Cart here
             </Link>
           </div>
